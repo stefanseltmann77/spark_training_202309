@@ -1,7 +1,7 @@
 # %% setup
 
 # os.environ["PYSPARK_PYTHON"] = '/usr/local/miniconda/envs/spark3/bin/python3'
-from pyspark.sql import SparkSession
+from pyspark.sql import SparkSession, DataFrame
 
 from spark_setup_spark3 import get_spark
 
@@ -14,7 +14,7 @@ spark.sparkContext.setLogLevel("ERROR")
 # %% with spark < 3.2 #################################################################################################
 import databricks.koalas as ks
 
-import pandas as pd
+# import pandas as pd
 
 # read like a pandas dataframe
 # s = pd.read_csv("./data/recipeData.csv")
@@ -69,8 +69,14 @@ df_ps.Name.value_counts().plot()
 # how much liquers?
 (df_ps.loc[df_ps.Name == 'IPA'].ABV > 0.15).sum()
 
+df_ps.to_spark()
 
 # switch to real pandas
 df_pd = df_ps.to_pandas()
 df_pd.value_counts().plot()
 
+
+df_spark: DataFrame = df_ps.to_spark()
+df_spark.to_pandas_on_spark()
+
+spark.createDataFrame(df_pd)

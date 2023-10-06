@@ -10,7 +10,7 @@ spark.conf.set("spark.sql.shuffle.partitions", "20")
 
 # %% Analyze Kafka stationary
 df_raw = spark.read.format("kafka"). \
-    option("kafka.bootstrap.servers", 'localhost:9092'). \
+    option("kafka.bootstrap.servers", 'kafka:9092'). \
     option("subscribe", TOPIC_NAME).load()
 
 df_raw.count()  # with every count the number
@@ -74,7 +74,7 @@ def process_kafka_df(df_input, schema_input):
 
 # %% write stream to csv:
 df_stream = spark.readStream.format("kafka"). \
-    option("kafka.bootstrap.servers", 'localhost:9092'). \
+    option("kafka.bootstrap.servers", 'kafka:9092'). \
     option("subscribe", TOPIC_NAME).load()
 
 df_stream_processed = process_kafka_df(df_stream, schema_complete)
@@ -86,7 +86,7 @@ kafka_stream.stop()
 
 # %% write stream to console:
 df_stream = spark.readStream.format("kafka"). \
-    option("kafka.bootstrap.servers", 'localhost:9092'). \
+    option("kafka.bootstrap.servers", 'kafka:9092'). \
     option("subscribe", TOPIC_NAME).load()
 
 df_stream_processed = process_kafka_df(df_stream, schema_complete)

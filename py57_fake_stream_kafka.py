@@ -28,7 +28,7 @@ def build_consumption_event() -> dict[str, Any]:
 TOPIC_NAME: str = "beerhall"
 
 if __name__ == '__main__':
-    p = Producer({'bootstrap.servers': 'localhost:9092'})
+    p = Producer({'bootstrap.servers': 'kafka:9092'})
     for i in range(10000):
         sleep(randint(1, 4))
         event = build_consumption_event()
